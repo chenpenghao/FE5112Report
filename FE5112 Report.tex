@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand\thesubsubsection{\alph{subsubsection}}
+\setlength{\parskip}{1em}
+\setlength\parindent{0pt}
+\renewcommand\arraystretch{1.5}
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{almond}{RGB}{246, 243, 199}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{ForestGreen}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+backgroundcolor=\color{almond}
+}
+
+% Bibliography
+\usepackage[style=apa, backend=biber]{biblatex}
+\addbibresource{5112.bib}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{
+	\includegraphics[scale=0.08]{./media/0.png}\\
+	\vfill
+	{\Large \textbf{FE5112}\par}
+	{\Large \textbf{Stochastic Calculus and Quantitative Methods}\par}
+	{\Large Project Report\par}
+	\vfill
+	{\normalsize Chen Penghao (A0122017Y)\par}
+	{\normalsize Chia Kai Jit (A0122017Y)\par}
+	{\normalsize Joanna See (A0122017Y)\par}
+	{\normalsize Li Yihao (A0122017Y)\par}
+	{\normalsize Zhang Zequn (A0122017Y)\par}
+	\vfill
+% Bottom of the page
+	{ November 2020\par}
+}
+\end{titlepage}
+
+\section{Introduction}
+The project aims to obtain the price of an Asian American put option by using the Least-Squared Monte Carlo simulation method.  We also have explored various techniques to reduce the variance of the results produced and to increase the stablity of the results.
+
+\section{Problem Statement}
+
+The market is complete and arbitrage free. The risk free interest rate is 8\%. The price of a non-dividend-paying stock $S_t$ at time $t$ is governed by the following SDE under the risk neutral probability measure $\mathbb{Q}$:
+
+$$
+\begin{cases}
+dS_t = 0.08\hspace{1mm}S_t\hspace{1mm}dt + \sigma(S_t) \cdot S_t\hspace{1mm}dW_t, t > 0 \\
+S_0 = 100
+\end{cases}
+$$
+
+where $W_t$ is a Brownian motion under $\mathbb{Q}$ and $\sigma(\cdot)$ is a function given as the following:
+
+$$
+\sigma(x) = 
+\begin{cases}
+0.25+ 0.02 \times \left ( 1.0 - \dfrac{x}{S_0} \right), \text{if }x\leq 100 \\
+\max\left(0.001, 0.25-0.01 \times\left(\dfrac{x}{S_0} - 1\right) \right), \text{if }x>100
+\end{cases}
+$$
+
+We are to price a one-year-non-exercise American Asian put option with the strike price $K=108$ and the maturity $T=2$ in years. The option is not exercisable in the first year. The option is exercisable once and only once in the second year. If the option is exercised on a day $n$, where $366 \leq n \leq 730$, the option buyer will receive a payout of $(K-A_n)^+$, where $A_n$ is given by:
+$$A_n = \dfrac{1}{60} \sum_{i=n-60}^{n-1} S_{\frac{i}{365}}$$
+
+We assume that there are 365 days in a year and all days are business days.
+
+\newpage
+\section{LSMC with no variance reduction}
+
+\subsection{Settings}
+
+The variables are set up as the folloging:
+
+\begin{lstlisting}[language=Python]
+T = 2                       # Duration in years
+L = 730                     # Number of time intervals
+M = 500                     # Number of asset paths
+rf = 0.08                   # Annualized risk-free rate
+S0 = 100.0                  # Beginning stock price
+dt = T/L                    # Time discretization (dt = 1/365)
+dayEx = 730                 # Maximum days before the option exercises
+discf = math.exp(-rf * dt)  # Discount factor to backwardize by one day.
+\end{lstlisting}
+
+
+\subsection{The Algorithm}
+
+Our algorithm follows the following step:
+
+\begin{enumerate}
+\item Generate $M$ sample paths.
+\item Generate a table of stock price data $S_L$ for 730 time intervals with 500 asset price paths. $S(i,j)$ would refer to the stock price on the $i^\text{th}$ path on the $j^\text{th}$ day.
+\item Calculate the option payoff on the final day, the $L^\text{th}$ day or day 730.
+\item Starting with the final day, we do a backward propagation for each simulated path of the asset:
+	\begin{enumerate}
+	\item Skip all the paths where 
+	\end{enumerate}
+\end{enumerate}
+
+\subsection{Analysis of results}
+
+\subsection{Conclusion}
+
+\section{Variance reduction methods applied to LSMC}
+
+\subsection{Antithetic Method}
+
+\subsection{Control Variate Method}
+
+\subsection{Importance Sampling Method}
+
+\section{Conclusion}
+
+\section{Final Words}
+
+The contributions of our group members are as of the following:
+\begin{itemize}
+\item Kai Jit: Variance reduction with Antithetic method.
+\item Penghao: Base code for LSMC and analysis.
+\item Zequn: Variance reduction with importance sampling; Visualization of price paths; Refactor code base.
+\item Yihao: Variance reduction with control variate.
+\item Joanna:
+\end{itemize}
+
+\printbibliography
+
+\end{document}
