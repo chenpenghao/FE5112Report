@@ -112,10 +112,12 @@ Our algorithm follows the following step:
 \item Generate $M$ sample paths.
 \item Generate a table of stock price data $S_L$ for 730 time intervals with 500 asset price paths. $S(i,j)$ would refer to the stock price on the $i^\text{th}$ path on the $j^\text{th}$ day.
 \item Calculate the option payoff on the final day, the $L^\text{th}$ day or day 730.
-\item Starting with the final day, we do a backward propagation for each simulated path of the asset:
+\item Starting with the $(L-1)^\text{th}$ day, we do a backward propagation for each simulated path of the asset. For day i from $L-1$ back to 366:
 	\begin{enumerate}
-	\item Skip all the paths where 
+	\item Skip all the paths where it is not in the money on the $i^\text{th}$ day.
+	\item If some path is in the money, 
 	\end{enumerate}
+\item The prices on all the sample pathsa re discounted to day 0. We simply take the average of the paths to obtain the fair value of the option.
 \end{enumerate}
 
 \subsection{Analysis of results}
