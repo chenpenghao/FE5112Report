@@ -61,7 +61,7 @@ The project aims to obtain the price of an Asian American put option by using th
 
 \section{Problem Statement}
 
-The market is complete and arbitrage free. The risk free interest rate is 8\%. The price of a non-dividend-paying stock $S_t$ at time $t$ is governed by the following SDE under the risk neutral probability measure $\mathbb{Q}$:
+The market is complete and arbitrage free. The risk free interest rate is 8\%. The price of a non-dividend-paying stock $S_t$ at time $t$ is governed by the following SDE under the risk neutral probability measure $\mathcal{Q}$:
 
 $$
 \begin{cases}
@@ -70,7 +70,7 @@ S_0 = 100
 \end{cases}
 $$
 
-where $W_t$ is a Brownian motion under $\mathbb{Q}$ and $\sigma(\cdot)$ is a function given as the following:
+where $W_t$ is a Brownian motion under $\mathcal{Q}$ and $\sigma(\cdot)$ is a function given as the following:
 
 $$
 \sigma(x) = 
@@ -90,12 +90,12 @@ We assume that there are 365 days in a year and all days are business days.
 
 \subsection{Settings}
 
-The variables are set up as the folloging:
+The variables are set up as the following:
 
 \begin{lstlisting}[language=Python]
 T = 2                       # Duration in years
 L = 730                     # Number of time intervals
-M = 500                     # Number of asset paths
+M = 10000                     # Number of asset paths
 rf = 0.08                   # Annualized risk-free rate
 S0 = 100.0                  # Beginning stock price
 dt = T/L                    # Time discretization (dt = 1/365)
