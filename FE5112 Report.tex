@@ -130,7 +130,24 @@ Our algorithm follows the following step:
 
 \subsection{Control Variate Method}
 
+
+\begin{align}
+    \Tilde{X} = X + c(Y - \mathbb{E}[Y])
+\end{align}
+
+\begin{align}
+    \Tilde{c} = -\frac{Cov(X,Y)}{Var(Y)}
+\end{align}
+
 \subsection{Importance Sampling Method}
+
+\begin{align}
+    dS_t = rS_t{dt} + \sigma{S_t}dW_t
+\end{align}
+
+\begin{align}
+    \theta = \frac{r-r_1}{\sigma}
+\end{align}
 
 \section{Conclusion}
 
